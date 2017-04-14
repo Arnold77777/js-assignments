@@ -1,148 +1,196 @@
 'use strict';
 
-/**
- * Returns the bank account number parsed from specified string.
- *
- * You work for a bank, which has recently purchased an ingenious machine to assist in reading letters and faxes sent in by branch offices.
- * The machine scans the paper documents, and produces a string with a bank account that looks like this:
- *
- *    _  _     _  _  _  _  _
- *  | _| _||_||_ |_   ||_||_|
- *  ||_  _|  | _||_|  ||_| _|
- *
- * Each string contains an account number written using pipes and underscores.
- * Each account number should have 9 digits, all of which should be in the range 0-9.
- *
- * Your task is to write a function that can take bank account string and parse it into actual account numbers.
- *
- * @param {string} bankAccount
- * @return {number}
- *
- * Example of return :
- *
- *   '    _  _     _  _  _  _  _ \n'+
- *   '  | _| _||_||_ |_   ||_||_|\n'+     =>  123456789
- *   '  ||_  _|  | _||_|  ||_| _|\n'
- *
- *   ' _  _  _  _  _  _  _  _  _ \n'+
- *   '| | _| _|| ||_ |_   ||_||_|\n'+     => 23056789
- *   '|_||_  _||_| _||_|  ||_| _|\n',
- *
- *   ' _  _  _  _  _  _  _  _  _ \n'+
- *   '|_| _| _||_||_ |_ |_||_||_|\n'+     => 823856989
- *   '|_||_  _||_| _||_| _||_| _|\n',
- *
- */
-function parseBankAccount(bankAccount) {
-    throw new Error('Not implemented');
-}
+/**********************************************************************************************
+ *                                                                                            *
+ * Plese read the following tutorial before implementing tasks:                               *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions                    *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function  *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments      *
+ * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures                           *
+ *                                                                                            *
+ **********************************************************************************************/
 
 
 /**
- * Returns the string, but with line breaks inserted at just the right places to make sure that no line is longer than the specified column number.
- * Lines can be broken at word boundaries only.
+ * Returns the functions composition of two specified functions f(x) and g(x).
+ * The result of compose is to be a function of one argument, (lets call the argument x),
+ * which works like applying function f to the result of applying function g to x, i.e.
+ *  getComposition(f,g)(x) = f(g(x))
  *
- * @param {string} text
- * @param {number} columns
- * @return {Iterable.<string>}
- *
- * @example :
- *
- *  'The String global object is a constructor for strings, or a sequence of characters.', 26 =>  'The String global object',
- *                                                                                                'is a constructor for',
- *                                                                                                'strings, or a sequence of',
- *                                                                                                'characters.'
- *
- *  'The String global object is a constructor for strings, or a sequence of characters.', 12 =>  'The String',
- *                                                                                                'global',
- *                                                                                                'object is a',
- *                                                                                                'constructor',
- *                                                                                                'for strings,',
- *                                                                                                'or a',
- *                                                                                                'sequence of',
- *                                                                                                'characters.'
- */
-function* wrapText(text, columns) {
-    throw new Error('Not implemented');
-}
-
-
-/**
- * Returns the rank of the specified poker hand.
- * See the ranking rules here: https://en.wikipedia.org/wiki/List_of_poker_hands.
- *
- * @param {array} hand
- * @return {PokerRank} rank
+ * @param {Function} f
+ * @param {Function} g
+ * @return {Function}
  *
  * @example
- *   [ '4♥','5♥','6♥','7♥','8♥' ] => PokerRank.StraightFlush
- *   [ 'A♠','4♠','3♠','5♠','2♠' ] => PokerRank.StraightFlush
- *   [ '4♣','4♦','4♥','4♠','10♥' ] => PokerRank.FourOfKind
- *   [ '4♣','4♦','5♦','5♠','5♥' ] => PokerRank.FullHouse
- *   [ '4♣','5♣','6♣','7♣','Q♣' ] => PokerRank.Flush
- *   [ '2♠','3♥','4♥','5♥','6♥' ] => PokerRank.Straight
- *   [ '2♥','4♦','5♥','A♦','3♠' ] => PokerRank.Straight
- *   [ '2♥','2♠','2♦','7♥','A♥' ] => PokerRank.ThreeOfKind
- *   [ '2♥','4♦','4♥','A♦','A♠' ] => PokerRank.TwoPairs
- *   [ '3♥','4♥','10♥','3♦','A♠' ] => PokerRank.OnePair
- *   [ 'A♥','K♥','Q♥','2♦','3♠' ] =>  PokerRank.HighCard
+ *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.acos(x))
+ *
  */
-const PokerRank = {
-    StraightFlush: 8,
-    FourOfKind: 7,
-    FullHouse: 6,
-    Flush: 5,
-    Straight: 4,
-    ThreeOfKind: 3,
-    TwoPairs: 2,
-    OnePair: 1,
-    HighCard: 0
+function getComposition(f,g) {
+    return function(x) {
+        return f(g(x));
+    }
 }
 
-function getPokerHandRank(hand) {
+
+/**
+ * Returns the math power function with the specified exponent
+ *
+ * @param {number} exponent
+ * @return {Function}
+ *
+ * @example
+ *   var power2 = getPowerFunction(2); // => x^2
+ *   power2(2) => 4
+ *   power2(4) => 16
+ *
+ *   var power05 = getPowerFunction(0.5); // => x^0.5
+ *   power05(4) => 2
+ *   power05(16) => 4
+ *
+ */
+function getPowerFunction(exponent) {
+    return function power(x) {
+        return x**exponent;
+    }
+}
+
+
+/**
+ * Returns the polynom function of one argument based on specified coefficients.
+ * See: https://en.wikipedia.org/wiki/Polynomial#Definition
+ *
+ * @params {integer}
+ * @return {Function}
+ *
+ * @example
+ *   getPolynom(2,3,5) => y = 2*x^2 + 3*x + 5
+ *   getPolynom(1,-3)  => y = x - 3
+ *   getPolynom(8)     => y = 8
+ *   getPolynom()      => null
+ */
+function getPolynom() {
+    return function(args) {
+    }
+}
+
+
+/**
+ * Memoizes passed function and returns function
+ * which invoked first time calls the passed function and then always returns cached result.
+ *
+ * @params {Function} func - function to memoize
+ * @return {Function} memoized function
+ *
+ * @example
+ *   var memoizer = memoize(() => Math.random());
+ *   memoizer() => some random number  (first run, evaluates the result of Math.random())
+ *   memoizer() => the same random number  (second run, returns the previous cached result)
+ *   ...
+ *   memoizer() => the same random number  (next run, returns the previous cached result)
+ */
+function memoize(func) {
     throw new Error('Not implemented');
 }
 
 
 /**
- * Returns the rectangles sequence of specified figure.
- * The figure is ASCII multiline string comprised of minus signs -, plus signs +, vertical bars | and whitespaces.
- * The task is to break the figure in the rectangles it is made of.
+ * Returns the function trying to call the passed function and if it throws,
+ * retrying it specified number of attempts.
  *
- * NOTE: The order of rectanles does not matter.
- * 
- * @param {string} figure
- * @return {Iterable.<string>} decomposition to basic parts
- * 
+ * @param {Function} func
+ * @param {number} attempts
+ * @return {Function}
+ *
+ * @example
+ * var attempt = 0, retryer = retry(() => {
+ *      if (++attempt % 2) throw new Error('test');
+ *      else return attempt;
+ * }, 2);
+ * retryer() => 2
+ */
+function retry(func, attempts) {
+    throw new Error('Not implemented');
+}
+
+
+/**
+ * Returns the logging wrapper for the specified method,
+ * Logger has to log the start and end of calling the specified function.
+ * Logger has to log the arguments of invoked function.
+ * The fromat of output log is:
+ * <function name>(<arg1>, <arg2>,...,<argN>) starts
+ * <function name>(<arg1>, <arg2>,...,<argN>) ends
+ *
+ *
+ * @param {Function} func
+ * @param {Function} logFunc - function to output log with single string argument
+ * @return {Function}
+ *
  * @example
  *
- *    '+------------+\n'+
- *    '|            |\n'+
- *    '|            |\n'+              '+------------+\n'+
- *    '|            |\n'+              '|            |\n'+         '+------+\n'+          '+-----+\n'+
- *    '+------+-----+\n'+       =>     '|            |\n'+     ,   '|      |\n'+     ,    '|     |\n'+
- *    '|      |     |\n'+              '|            |\n'+         '|      |\n'+          '|     |\n'+
- *    '|      |     |\n'               '+------------+\n'          '+------+\n'           '+-----+\n'
- *    '+------+-----+\n'
+ * var cosLogger = logger(Math.cos, console.log);
+ * var result = cosLogger(Math.PI));     // -1
  *
+ * log from console.log:
+ * cos(3.141592653589793) starts
+ * cos(3.141592653589793) ends
  *
- *
- *    '   +-----+     \n'+
- *    '   |     |     \n'+                                    '+-------------+\n'+
- *    '+--+-----+----+\n'+              '+-----+\n'+          '|             |\n'+
- *    '|             |\n'+      =>      '|     |\n'+     ,    '|             |\n'+
- *    '|             |\n'+              '+-----+\n'           '+-------------+\n'
- *    '+-------------+\n'
  */
-function* getFigureRectangles(figure) {
-   throw new Error('Not implemented');
+function logger(func, logFunc) {
+    throw new Error('Not implemented');
+}
+
+
+/**
+ * Return the function with partial applied arguments
+ *
+ * @param {Function} fn
+ * @return {Function}
+ *
+ * @example
+ *   var fn = function(x1,x2,x3,x4) { return  x1 + x2 + x3 + x4; };
+ *   partialUsingArguments(fn, 'a')('b','c','d') => 'abcd'
+ *   partialUsingArguments(fn, 'a','b')('c','d') => 'abcd'
+ *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
+ *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
+ */
+function partialUsingArguments(fn) {
+    throw new Error('Not implemented');
+}
+
+
+/**
+ * Returns the id generator function that returns next integer starting from specified number every time when invoking.
+ *
+ * @param {Number} startFrom
+ * @return {Function}
+ *
+ * @example
+ *   var getId4 = getIdGenerator(4);
+ *   var getId10 = gerIdGenerator(10);
+ *   getId4() => 4
+ *   getId10() => 10
+ *   getId4() => 5
+ *   getId4() => 6
+ *   getId4() => 7
+ *   getId10() => 11
+ */
+function getIdGeneratorFunction(startFrom) {
+    let curCount = startFrom;
+    function counter() {
+        return curCount++;
+    }
+    return counter;
 }
 
 
 module.exports = {
-    parseBankAccount : parseBankAccount,
-    wrapText: wrapText,
-    PokerRank: PokerRank,
-    getPokerHandRank: getPokerHandRank,
-    getFigureRectangles: getFigureRectangles
+    getComposition: getComposition,
+    getPowerFunction: getPowerFunction,
+    getPolynom: getPolynom,
+    memoize: memoize,
+    retry: retry,
+    logger: logger,
+    partialUsingArguments: partialUsingArguments,
+    getIdGeneratorFunction: getIdGeneratorFunction,
 };
