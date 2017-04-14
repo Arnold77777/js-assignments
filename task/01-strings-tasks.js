@@ -69,7 +69,8 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-    return value.slice(7, -1);
+    let arr = value.split(/Hello, /)
+    return arr[1].substring(0, arr[1].length - 1);
 }
 
 
@@ -84,7 +85,7 @@ function extractNameFromTemplate(value) {
  *   'cat'       => 'c'
  */
 function getFirstChar(value) {
-    return value.charAt(0);
+    return value.substring(0, 1);
 }
 
 /**
@@ -114,7 +115,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'cat', 3 => 'catcatcat'
  */
 function repeatString(value, count) {
-    return str.repeat(value);
+    return value.repeat(count);
 }
 
 /**
@@ -130,7 +131,7 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-    return str.replace(value, '');
+    return str.replace(value, "");
 }
 
 /**
@@ -145,7 +146,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-    return str.slice(1,-1);
+    return str.match(/[^<>]/gi).join('');
 }
 
 
@@ -201,16 +202,13 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-    let c = '';
-        var copy = function () {
-        for (let a = 0; a < height -2; a++) {
-           c += '│' + ' '.repeat(width -2) + '│' + '\n';
-        }
-           return c;
-           }
- 
-    var b = '┌' + '─'.repeat(width -2) + '┐' + '\n' + copy() + '└' + '─' .repeat(width -2) + '┘' + '\n'
-    return b;
+    let str = '';
+    str += String.fromCharCode(9484) + String.fromCharCode(9472).repeat(width - 2) + String.fromCharCode(9488) + '\n';
+    for (let i = 0; i < height - 2; i++) {
+        str += String.fromCharCode(9474) + ' '.repeat(width - 2) + String.fromCharCode(9474) + '\n';
+    }
+    str += String.fromCharCode(9492) + String.fromCharCode(9472).repeat(width - 2) + String.fromCharCode(9496) + '\n';
+    return str;
 }
 
 
@@ -230,8 +228,11 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    return str.replace(/[A-z]/g, function(c) {
-        return String.fromCharCode((c<='Z' ? 90 : 122) >= (c=c.charCodeAt(0)+13) ? c:c-26);
+    var input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    var output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+    return str.replace(/[A-Za-z]/gi, (current, offset) => {
+        let pos = input.indexOf(current);
+        return output.charAt(pos);
     });
 }
 
@@ -249,9 +250,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-    if (Object.prototype.toString.call(value).slice(8, -1).toLowerCase()==='string') return true;
-    else return false;
-}
+    return typeof value === 'string' || value instanceof String ? true : false;}
 
 
 /**
@@ -279,8 +278,13 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-    let cards = ['A♣','2♣','3♣','4♣','5♣','6♣','7♣','8♣','9♣','10♣','J♣','Q♣','K♣','A♦','2♦','3♦','4♦','5♦','6♦','7♦','8♦','9♦','10♦','J♦','Q♦','K♦','A♥','2♥','3♥','4♥','5♥','6♥','7♥','8♥','9♥','10♥','J♥','Q♥','K♥','A♠','2♠','3♠','4♠','5♠','6♠','7♠','8♠','9♠','10♠','J♠','Q♠','K♠'];
-    return cards.indexOf(value);
+    let input = 'A♣,2♣,3♣,4♣,5♣,6♣,7♣,8♣,9♣,10♣,J♣,Q♣,K♣,A♦,2♦,3♦,4♦,5♦,6♦,7♦,8♦,9♦,10♦,J♦,Q♦,K♦,A♥,2♥,3♥,4♥,5♥,6♥,7♥,8♥,9♥,10♥,J♥,Q♥,K♥,A♠,2♠,3♠,4♠,5♠,6♠,7♠,8♠,9♠,10♠,J♠,Q♠,K♠'
+    let arr = input.split(',');
+    let pos = null;
+    arr.forEach((item, i) => {
+        if (item === value) pos = i;
+    })
+    return pos;
 }
 
 
@@ -301,4 +305,3 @@ module.exports = {
     isString: isString,
     getCardId: getCardId
 };
-
