@@ -49,9 +49,7 @@ function getComposition(f,g) {
  *
  */
 function getPowerFunction(exponent) {
-    return function power(x) {
-        return x**exponent;
-    }
+    throw new Error('Not implemented');
 }
 
 
