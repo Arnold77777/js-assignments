@@ -157,7 +157,8 @@ function doRectanglesOverlap(rect1, rect2) {
  *   
  */
 function isInsideCircle(circle, point) {
-        throw new Error('Not implemented');
+    return Math.sqrt(Math.pow(circle.center.x - point.x, 2) +
+                     Math.pow(circle.center.y - point.y, 2)) < circle.radius;
 }
 
 
@@ -205,7 +206,13 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-    throw new Error('Not implemented');
+    let arr = [];
+    arr.push(a, b);
+    arr.sort((a, b) => a - b);
+    isStartIncluded = isStartIncluded ? '[' : '(';
+    isEndIncluded = isEndIncluded ? ']' : ')';
+    return isStartIncluded + arr.join(', ') + isEndIncluded;
+
 }
 
 
@@ -276,7 +283,13 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-    throw new Error('Not implemented');
+    let arr = (ccn + '').split('').reverse();
+    let result = arr.reduce((sum, current, i) => {
+        let double = +current * 2 + '';
+        let value = +double > 9 ? +double[0] + +double[1] : double;
+        return i % 2 === 1 ? +sum + +value : +sum + +current;
+    })
+    return result % 10 === 0;
 }
 
 
@@ -381,7 +394,16 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-    return num.toString(n);
+    retif(num == 0)
+        return 0;
+        
+    var arr = [];
+    while (num !=0) {
+        var prom = num % n;
+        arr.unshift(prom);
+        num = Math.floor(num / n);
+    }
+    return arr.join("");
 }
 
 
